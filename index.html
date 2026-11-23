@@ -23,25 +23,21 @@
     --ease-out:cubic-bezier(0.23,1,0.32,1);
     --ease-in-out:cubic-bezier(0.77,0,0.175,1);
     --dur-press:140ms; --dur-fast:160ms; --dur-ui:200ms; --dur-move:220ms;
-    --gx:22px; --gy:24px;
+    --gx:clamp(16px,5.5vw,28px); --gy:clamp(16px,3vh,28px);
     --sl:env(safe-area-inset-left,0px); --sr:env(safe-area-inset-right,0px);
     --st:env(safe-area-inset-top,0px);  --sb:env(safe-area-inset-bottom,0px);
-    /* One unit drives every dimension. It is the largest size at which the whole
-       sheet (342u wide × 530u tall) fits the window in BOTH directions, so the page
-       never scrolls and never clips — on a phone, a short in-app browser or a desktop. */
-    --W:342; --H:530; --max:1.4px; --min:.8px;
+    /* One unit drives every dimension so the sheet fits both axes without scrolling or clipping. */
+    --W:342; --H:530; --max:1.4px; --min:.68px; --vh:100vh;
     --u:clamp(var(--min),
           min(calc((100vw - 2*var(--gx) - var(--sl) - var(--sr)) / var(--W)),
-              calc((100vh - 2*var(--gy) - var(--st) - var(--sb)) / var(--H))),
+              calc((var(--vh) - 2*var(--gy) - var(--st) - var(--sb)) / var(--H))),
           var(--max));
+    /* Bounded vertical breathing: absorbs a capped fraction (<48%) of surplus height on tall screens. */
+    --extra-y:max(0px,calc(var(--vh) - 2*var(--gy) - var(--st) - var(--sb) - var(--u)*var(--H)));
+    --row-py:calc(var(--u)*10.5 + clamp(0px,var(--extra-y)*0.022,var(--u)*2.5));
   }
   @supports (height:1dvh){
-    :root{
-      --u:clamp(var(--min),
-            min(calc((100vw - 2*var(--gx) - var(--sl) - var(--sr)) / var(--W)),
-                calc((100dvh - 2*var(--gy) - var(--st) - var(--sb)) / var(--H))),
-            var(--max));
-    }
+    :root{--vh:100dvh;--gy:clamp(16px,3dvh,28px)}
   }
 
   *{margin:0;padding:0;box-sizing:border-box}
@@ -191,8 +187,8 @@
   .lang-ink[data-snap="1"]{transition:none}
 
   /* ── link lists ── */
-  .lists{margin-top:calc(var(--u)*30)}
-  .zone + .zone{margin-top:calc(var(--u)*20)}
+  .lists{margin-top:calc(var(--u)*30 + clamp(0px,var(--extra-y)*0.08,var(--u)*12))}
+  .zone + .zone{margin-top:calc(var(--u)*20 + clamp(0px,var(--extra-y)*0.055,var(--u)*8))}
   .eyebrow{
     display:flex;align-items:center;gap:calc(var(--u)*12);
     font-size:calc(var(--u)*10);font-weight:700;letter-spacing:.22em;text-transform:uppercase;
@@ -232,7 +228,7 @@
 
   .lk{
     display:flex;align-items:center;gap:calc(var(--u)*12);
-    padding:calc(var(--u)*10.5) calc(var(--u)*8);
+    padding:var(--row-py) calc(var(--u)*8);
     border-radius:calc(var(--u)*5);text-decoration:none;color:var(--ink);
     -webkit-tap-highlight-color:transparent;
     transition:background-color var(--dur-fast) ease,transform var(--dur-press) var(--ease-out);
@@ -278,7 +274,7 @@
   .row-c{display:flex;align-items:stretch}
   .row-c .lk{
     flex:1;min-width:0;
-    padding:calc(var(--u)*10.5) calc(var(--u)*4) calc(var(--u)*10.5) calc(var(--u)*8);
+    padding:var(--row-py) calc(var(--u)*4) var(--row-py) calc(var(--u)*8);
   }
   .hd-wrap{
     position:relative;margin-left:auto;display:grid;justify-items:end;align-items:center;
@@ -301,7 +297,7 @@
   .cp{
     appearance:none;background:none;border:0;cursor:pointer;flex:none;
     display:grid;place-items:center;
-    padding:calc(var(--u)*10.5) calc(var(--u)*8);
+    padding:var(--row-py) calc(var(--u)*8);
     border-radius:calc(var(--u)*5);color:var(--ink-3);
     -webkit-tap-highlight-color:transparent;
     transition:color var(--dur-fast) ease,transform var(--dur-press) var(--ease-out),background-color var(--dur-fast) ease;
@@ -330,7 +326,7 @@
   .btn{
     position:relative;overflow:hidden;
     display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*12);
-    margin-top:calc(var(--u)*24);padding:calc(var(--u)*14) calc(var(--u)*18);border-radius:3px;
+    margin-top:calc(var(--u)*24 + clamp(0px,var(--extra-y)*0.08,var(--u)*12));padding:calc(var(--u)*14) calc(var(--u)*18);border-radius:3px;
     background:var(--ink);color:var(--paper);text-decoration:none;
     font-size:calc(var(--u)*12.5);font-weight:700;letter-spacing:.14em;text-transform:uppercase;line-height:1.2;
     -webkit-tap-highlight-color:transparent;
@@ -390,9 +386,17 @@
     .btn:not([data-done="1"]):hover .ic-dl .ic-b{transform:translate3d(0,0,0);opacity:1}
   }
 
-  /* Phone held sideways / very short windows: two columns so nothing shrinks to dust. */
-  @media (orientation:landscape) and (max-height:520px){
-    :root{--W:724;--H:304;--max:1.3px}
+  /* Spacious tablets & full-HD / 4K monitors: subtly taller ceiling while keeping scan width tight */
+  @media (min-width:720px) and (min-height:960px){
+    :root{--max:1.52px}
+  }
+  @media (min-width:1400px) and (min-height:1040px){
+    :root{--max:1.6px}
+  }
+
+  /* Wide-but-short viewports (sideways phone, split desktop): two columns only when wide enough */
+  @media (orientation:landscape) and (min-width:640px) and (max-height:580px) and (min-aspect-ratio:14/9){
+    :root{--W:724;--H:304;--max:1.3px;--extra-y:0px}
     .sheet{
       grid-template-columns:calc(var(--u)*342) 1fr;column-gap:calc(var(--u)*40);
       grid-template-rows:auto 1fr auto;
