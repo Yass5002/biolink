@@ -27,7 +27,7 @@
     --sl:env(safe-area-inset-left,0px); --sr:env(safe-area-inset-right,0px);
     --st:env(safe-area-inset-top,0px);  --sb:env(safe-area-inset-bottom,0px);
     /* One unit drives every dimension so the sheet fits both axes without scrolling or clipping. */
-    --W:342; --H:530; --max:1.4px; --min:.68px; --vh:100vh;
+    --W:342; --H:584; --max:1.38px; --min:.66px; --vh:100vh;
     --u:clamp(var(--min),
           min(calc((100vw - 2*var(--gx) - var(--sl) - var(--sr)) / var(--W)),
               calc((var(--vh) - 2*var(--gy) - var(--st) - var(--sb)) / var(--H))),
@@ -186,23 +186,31 @@
   .lang-ink[data-ready="1"]{opacity:1}
   .lang-ink[data-snap="1"]{transition:none}
 
+  /* ── bio ── */
+  .bio{
+    margin-top:calc(var(--u)*18 + clamp(0px,var(--extra-y)*0.04,var(--u)*6));
+    font-size:calc(var(--u)*13);line-height:1.5;font-weight:400;letter-spacing:-.003em;
+    color:var(--val);text-wrap:pretty;
+    animation:rise 260ms var(--ease-out) 105ms backwards;
+  }
+
   /* ── link lists ── */
-  .lists{margin-top:calc(var(--u)*30 + clamp(0px,var(--extra-y)*0.08,var(--u)*12))}
+  .lists{margin-top:calc(var(--u)*24 + clamp(0px,var(--extra-y)*0.07,var(--u)*10))}
   .zone + .zone{margin-top:calc(var(--u)*20 + clamp(0px,var(--extra-y)*0.055,var(--u)*8))}
   .eyebrow{
     display:flex;align-items:center;gap:calc(var(--u)*12);
     font-size:calc(var(--u)*10);font-weight:700;letter-spacing:.22em;text-transform:uppercase;
     line-height:1.4;color:var(--ink-3);margin-bottom:calc(var(--u)*4);
-    animation:rise 240ms var(--ease-out) 115ms backwards;
+    animation:rise 240ms var(--ease-out) 140ms backwards;
   }
   .eyebrow > span{display:inline-block}
   .eyebrow::after{
     content:"";flex:1;height:1px;background:var(--rule);
     transform-origin:left center;
-    animation:rule-draw 320ms var(--ease-out) 130ms backwards;
+    animation:rule-draw 320ms var(--ease-out) 155ms backwards;
   }
-  .zone + .zone .eyebrow{animation-delay:260ms}
-  .zone + .zone .eyebrow::after{animation-delay:275ms}
+  .zone + .zone .eyebrow{animation-delay:285ms}
+  .zone + .zone .eyebrow::after{animation-delay:300ms}
 
   .list-wrap{position:relative;margin:0 calc(var(--u)*-8)}
   .list-hl{
@@ -219,12 +227,12 @@
     transition:opacity var(--dur-fast) ease;
     animation:rise 260ms var(--ease-out) backwards;
   }
-  .zone:first-child .list > li:nth-child(1){animation-delay:145ms}
-  .zone:first-child .list > li:nth-child(2){animation-delay:175ms}
-  .zone:first-child .list > li:nth-child(3){animation-delay:205ms}
-  .zone:first-child .list > li:nth-child(4){animation-delay:235ms}
-  .zone + .zone .list > li:nth-child(1){animation-delay:290ms}
-  .zone + .zone .list > li:nth-child(2){animation-delay:320ms}
+  .zone:first-child .list > li:nth-child(1){animation-delay:170ms}
+  .zone:first-child .list > li:nth-child(2){animation-delay:200ms}
+  .zone:first-child .list > li:nth-child(3){animation-delay:230ms}
+  .zone:first-child .list > li:nth-child(4){animation-delay:260ms}
+  .zone + .zone .list > li:nth-child(1){animation-delay:315ms}
+  .zone + .zone .list > li:nth-child(2){animation-delay:345ms}
 
   .lk{
     display:flex;align-items:center;gap:calc(var(--u)*12);
@@ -331,7 +339,7 @@
     font-size:calc(var(--u)*12.5);font-weight:700;letter-spacing:.14em;text-transform:uppercase;line-height:1.2;
     -webkit-tap-highlight-color:transparent;
     transition:background-color var(--dur-fast) ease,transform var(--dur-press) var(--ease-out);
-    animation:frame-in 280ms var(--ease-out) 355ms backwards;
+    animation:frame-in 280ms var(--ease-out) 380ms backwards;
   }
   .btn-lbl{display:inline-block}
   .btn .meta{
@@ -388,10 +396,10 @@
 
   /* Spacious tablets & full-HD / 4K monitors: subtly taller ceiling while keeping scan width tight */
   @media (min-width:720px) and (min-height:960px){
-    :root{--max:1.52px}
+    :root{--max:1.48px}
   }
   @media (min-width:1400px) and (min-height:1040px){
-    :root{--max:1.6px}
+    :root{--max:1.54px}
   }
 
   /* Wide-but-short viewports (sideways phone, split desktop): two columns only when wide enough */
@@ -402,13 +410,14 @@
       grid-template-rows:auto 1fr auto;
     }
     .top{grid-column:1;grid-row:1}
-    .btn{grid-column:1;grid-row:3;margin-top:calc(var(--u)*24)}
+    .bio{grid-column:1;grid-row:2;align-self:center;margin-top:calc(var(--u)*14)}
+    .btn{grid-column:1;grid-row:3;margin-top:calc(var(--u)*16)}
     .lists{grid-column:2;grid-row:1 / span 3;margin-top:0}
   }
 
   /* Reduced motion: drop spatial travel & scale, preserve gentle opacity/color cues */
   @media (prefers-reduced-motion:reduce){
-    .portrait,.name h1,.role,.lang,.eyebrow,.list > li,.btn{
+    .portrait,.name h1,.role,.lang,.bio,.eyebrow,.list > li,.btn{
       animation:fade-soft 180ms ease 0ms backwards;
     }
     .portrait img,.eyebrow::after{animation:none}
@@ -470,6 +479,8 @@
         <p class="role" data-fr="Développeur<br>Mobile &amp; Full-Stack" data-en="Mobile &amp; Full-Stack<br>Developer">Développeur<br>Mobile &amp; Full-Stack</p>
       </div>
     </header>
+
+    <p class="bio" data-fr="Un noyau solide, une architecture propre et du code qui tient en production, pas juste en démo." data-en="Stable core, clean architecture, and code that holds up in production, not just in a demo.">Un noyau solide, une architecture propre et du code qui tient en production, pas juste en démo.</p>
 
     <div class="lists">
       <section class="zone" aria-labelledby="h-links">
