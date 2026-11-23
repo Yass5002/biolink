@@ -14,7 +14,7 @@
 <link rel="preload" as="image" href="avatar.webp" type="image/webp" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,580&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,580;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#e7e2d6; --paper-2:#ddd5c3;
@@ -27,7 +27,7 @@
     --sl:env(safe-area-inset-left,0px); --sr:env(safe-area-inset-right,0px);
     --st:env(safe-area-inset-top,0px);  --sb:env(safe-area-inset-bottom,0px);
     /* One unit drives every dimension so the sheet fits both axes without scrolling or clipping. */
-    --W:342; --H:584; --max:1.38px; --min:.66px; --vh:100vh;
+    --W:342; --H:598; --max:1.36px; --min:.66px; --vh:100vh;
     --u:clamp(var(--min),
           min(calc((100vw - 2*var(--gx) - var(--sl) - var(--sr)) / var(--W)),
               calc((var(--vh) - 2*var(--gy) - var(--st) - var(--sb)) / var(--H))),
@@ -186,16 +186,28 @@
   .lang-ink[data-ready="1"]{opacity:1}
   .lang-ink[data-snap="1"]{transition:none}
 
-  /* ── bio ── */
+  /* ── editorial statement (structurally fused to the masthead in Fraunces serif) ── */
   .bio{
-    margin-top:calc(var(--u)*18 + clamp(0px,var(--extra-y)*0.04,var(--u)*6));
-    font-size:calc(var(--u)*13);line-height:1.5;font-weight:400;letter-spacing:-.003em;
-    color:var(--val);text-wrap:pretty;
-    animation:rise 260ms var(--ease-out) 105ms backwards;
+    position:relative;
+    margin-top:calc(var(--u)*15);
+    padding-top:calc(var(--u)*13);
+    font-family:Fraunces,Georgia,serif;font-weight:400;font-optical-sizing:auto;
+    font-size:calc(var(--u)*13.6);line-height:1.45;letter-spacing:-.006em;
+    color:#2e281f;text-wrap:pretty;
   }
+  .bio::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:1px;
+    background:rgba(189,179,159,.78);transform-origin:left center;
+    animation:rule-draw 300ms var(--ease-out) 95ms backwards;
+  }
+  .bio > span{
+    display:block;
+    animation:rise 260ms var(--ease-out) 115ms backwards;
+  }
+  .bio em{font-style:italic;color:var(--ink)}
 
   /* ── link lists ── */
-  .lists{margin-top:calc(var(--u)*24 + clamp(0px,var(--extra-y)*0.07,var(--u)*10))}
+  .lists{margin-top:calc(var(--u)*26 + clamp(0px,var(--extra-y)*0.08,var(--u)*12))}
   .zone + .zone{margin-top:calc(var(--u)*20 + clamp(0px,var(--extra-y)*0.055,var(--u)*8))}
   .eyebrow{
     display:flex;align-items:center;gap:calc(var(--u)*12);
@@ -410,17 +422,17 @@
       grid-template-rows:auto 1fr auto;
     }
     .top{grid-column:1;grid-row:1}
-    .bio{grid-column:1;grid-row:2;align-self:center;margin-top:calc(var(--u)*14)}
+    .bio{grid-column:1;grid-row:2;align-self:start;margin-top:calc(var(--u)*16);padding-top:calc(var(--u)*14)}
     .btn{grid-column:1;grid-row:3;margin-top:calc(var(--u)*16)}
     .lists{grid-column:2;grid-row:1 / span 3;margin-top:0}
   }
 
   /* Reduced motion: drop spatial travel & scale, preserve gentle opacity/color cues */
   @media (prefers-reduced-motion:reduce){
-    .portrait,.name h1,.role,.lang,.bio,.eyebrow,.list > li,.btn{
+    .portrait,.name h1,.role,.lang,.bio > span,.eyebrow,.list > li,.btn{
       animation:fade-soft 180ms ease 0ms backwards;
     }
-    .portrait img,.eyebrow::after{animation:none}
+    .portrait img,.bio::before,.eyebrow::after{animation:none}
     .lang-ink{transition:opacity 140ms ease}
     .list-hl{transition:opacity 140ms ease}
     .portrait img{transition:filter 180ms ease}
@@ -480,7 +492,7 @@
       </div>
     </header>
 
-    <p class="bio" data-fr="Un noyau solide, une architecture propre et du code qui tient en production, pas juste en démo." data-en="Stable core, clean architecture, and code that holds up in production, not just in a demo.">Un noyau solide, une architecture propre et du code qui tient en production, pas juste en démo.</p>
+    <p class="bio"><span data-fr="Un noyau solide, une architecture propre et du code qui tient en production, <em>pas juste en démo.</em>" data-en="Stable core, clean architecture, and code that holds up in production, <em>not just in a demo.</em>">Un noyau solide, une architecture propre et du code qui tient en production, <em>pas juste en démo.</em></span></p>
 
     <div class="lists">
       <section class="zone" aria-labelledby="h-links">
