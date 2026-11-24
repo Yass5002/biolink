@@ -808,21 +808,10 @@
         return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
       }
 
-      var img = ctx.createImageData(c.width, c.height);
+      var W = c.width, H = c.height;
+      var img = ctx.createImageData(W, H);
       var d = img.data;
-      var lenPx = d.length;
-      for(var idx = 0; idx < lenPx; idx += 4){
-        var n = rand() + rand() - 1;
-        if(n > 0){
-          d[idx] = 255; d[idx + 1] = 249; d[idx + 2] = 235;
-          d[idx + 3] = (n * 21) | 0;
-        } else {
-          d[idx] = 112; d[idx + 1] = 93; d[idx + 2] = 66;
-          d[idx + 3] = (-n * 18) | 0;
-        }
-      }
-      ctx.putImageData(img, 0, 0);
-      ctx.scale(dpr, dpr);
+      var row = 0, rowsPerChunk = 128;
 
       function wrapDraw(fn){
         for(var ox = -S; ox <= S; ox += S){
@@ -851,106 +840,145 @@
         ctx.stroke();
       }
 
-      for(var k = 0; k < 24; k++){
-        var px = rand() * S;
-        var py = rand() * S;
-        var pr = 50 + rand() * 108;
-        var bright = rand() < 0.56;
-        var pa = bright ? (0.042 + rand() * 0.038) : (0.024 + rand() * 0.03);
-        var drawPatch = function(){
-          var g = ctx.createRadialGradient(px, py, 0, px, py, pr);
-          if(bright){
-            g.addColorStop(0, 'rgba(255,250,238,' + pa.toFixed(3) + ')');
-            g.addColorStop(1, 'rgba(255,250,238,0)');
-          } else {
-            g.addColorStop(0, 'rgba(136,115,84,' + pa.toFixed(3) + ')');
-            g.addColorStop(1, 'rgba(136,115,84,0)');
-          }
-          ctx.fillStyle = g;
-          ctx.beginPath();
-          ctx.arc(px, py, pr, 0, Math.PI * 2);
-          ctx.fill();
-        };
-        wrapDraw(drawPatch);
-      }
-
-      ctx.lineCap = 'round';
-      for(var f1 = 0; f1 < 640; f1++){
-        var sx = rand() * S;
-        var sy = rand() * S;
-        var slen = 3 + rand() * 7.5;
-        var sang = rand() < 0.6 ? (rand() - 0.5) * 0.65 : rand() * Math.PI * 2;
-        var ex = sx + Math.cos(sang) * slen;
-        var ey = sy + Math.sin(sang) * slen;
-        var sbend = (rand() - 0.5) * slen * 0.35;
-        var scx = (sx + ex) * 0.5 - Math.sin(sang) * sbend;
-        var scy = (sy + ey) * 0.5 + Math.cos(sang) * sbend;
-        var light1 = rand() < 0.46;
-        var rgb1 = light1 ? '254,248,234' : '116,96,68';
-        var a1 = light1 ? (0.085 + rand() * 0.095) : (0.038 + rand() * 0.048);
-        var w1 = 0.32 + rand() * 0.32;
-        var drawShort = function(){ strokeTapered(sx, sy, scx, scy, ex, ey, w1, rgb1, a1); };
-        if(sx < 14 || sx > S - 14 || sy < 14 || sy > S - 14){ wrapDraw(drawShort); }
-        else { drawShort(); }
-      }
-
-      for(var i = 0; i < 220; i++){
-        var x0 = rand() * S;
-        var y0 = rand() * S;
-        var len = 6 + rand() * 14;
-        var ang = rand() < 0.52 ? (rand() - 0.5) * 0.55 : rand() * Math.PI * 2;
-        var x2 = x0 + Math.cos(ang) * len;
-        var y2 = y0 + Math.sin(ang) * len;
-        var bend = (rand() - 0.5) * len * 0.62;
-        var cx = (x0 + x2) * 0.5 - Math.sin(ang) * bend;
-        var cy = (y0 + y2) * 0.5 + Math.cos(ang) * bend;
-        var isLight = rand() < 0.44;
-        var rgb = isLight ? '254,248,234' : '108,88,62';
-        var lw = isLight ? (0.38 + rand() * 0.42) : (0.35 + rand() * 0.44);
-        var alpha = isLight ? (0.11 + rand() * 0.12) : (0.05 + rand() * 0.068);
-        var drawFiber = function(){ strokeTapered(x0, y0, cx, cy, x2, y2, lw, rgb, alpha); };
-        if(x0 < 24 || x0 > S - 24 || y0 < 24 || y0 > S - 24){ wrapDraw(drawFiber); }
-        else { drawFiber(); }
-      }
-
-      for(var j = 0; j < 78; j++){
-        var fx = rand() * S;
-        var fy = rand() * S;
-        var rx = 0.4 + rand() * 0.95;
-        var ry = rx * (0.42 + rand() * 0.68);
-        var rot = rand() * Math.PI;
-        var warmHull = rand() < 0.26;
-        var fa = warmHull ? (0.075 + rand() * 0.085) : (0.08 + rand() * 0.11);
-        var fill = warmHull
-          ? 'rgba(154,74,40,' + fa.toFixed(3) + ')'
-          : 'rgba(98,80,55,' + fa.toFixed(3) + ')';
-        var drawFleck = function(){
-          ctx.save();
-          ctx.translate(fx, fy);
-          ctx.rotate(rot);
-          ctx.fillStyle = fill;
-          ctx.beginPath();
-          ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.restore();
-        };
-        if(fx < 6 || fx > S - 6 || fy < 6 || fy > S - 6){ wrapDraw(drawFleck); }
-        else { drawFleck(); }
-      }
-
       function applyUrl(u){
         layer.style.backgroundImage = 'url(' + u + ')';
         layer.setAttribute('data-ready', '1');
         c.width = 0; c.height = 0;
       }
-      if(typeof c.toBlob === 'function' && window.URL && URL.createObjectURL){
-        c.toBlob(function(blob){
-          if(blob){ applyUrl(URL.createObjectURL(blob)); }
-          else { applyUrl(c.toDataURL('image/png')); }
-        }, 'image/png');
-      } else {
-        applyUrl(c.toDataURL('image/png'));
+
+      function stepGrain(){
+        var endRow = Math.min(H, row + rowsPerChunk);
+        var idx = row * W * 4;
+        var endIdx = endRow * W * 4;
+        for(; idx < endIdx; idx += 4){
+          var n = rand() + rand() - 1;
+          if(n > 0){
+            d[idx] = 255; d[idx + 1] = 249; d[idx + 2] = 235;
+            d[idx + 3] = (n * 21) | 0;
+          } else {
+            d[idx] = 112; d[idx + 1] = 93; d[idx + 2] = 66;
+            d[idx + 3] = (-n * 18) | 0;
+          }
+        }
+        row = endRow;
+        if(row < H){ setTimeout(stepGrain, 0); return; }
+        ctx.putImageData(img, 0, 0);
+        img = null; d = null;
+        ctx.scale(dpr, dpr);
+        setTimeout(stepPatches, 0);
       }
+
+      function stepPatches(){
+        for(var k = 0; k < 24; k++){
+          var px = rand() * S;
+          var py = rand() * S;
+          var pr = 50 + rand() * 108;
+          var bright = rand() < 0.56;
+          var pa = bright ? (0.042 + rand() * 0.038) : (0.024 + rand() * 0.03);
+          var drawPatch = function(){
+            var g = ctx.createRadialGradient(px, py, 0, px, py, pr);
+            if(bright){
+              g.addColorStop(0, 'rgba(255,250,238,' + pa.toFixed(3) + ')');
+              g.addColorStop(1, 'rgba(255,250,238,0)');
+            } else {
+              g.addColorStop(0, 'rgba(136,115,84,' + pa.toFixed(3) + ')');
+              g.addColorStop(1, 'rgba(136,115,84,0)');
+            }
+            ctx.fillStyle = g;
+            ctx.beginPath();
+            ctx.arc(px, py, pr, 0, Math.PI * 2);
+            ctx.fill();
+          };
+          wrapDraw(drawPatch);
+        }
+        ctx.lineCap = 'round';
+        setTimeout(function(){ stepFelt(0); }, 0);
+      }
+
+      function stepFelt(start){
+        var end = Math.min(640, start + 160);
+        for(var f1 = start; f1 < end; f1++){
+          var sx = rand() * S;
+          var sy = rand() * S;
+          var slen = 3 + rand() * 7.5;
+          var sang = rand() < 0.6 ? (rand() - 0.5) * 0.65 : rand() * Math.PI * 2;
+          var ex = sx + Math.cos(sang) * slen;
+          var ey = sy + Math.sin(sang) * slen;
+          var sbend = (rand() - 0.5) * slen * 0.35;
+          var scx = (sx + ex) * 0.5 - Math.sin(sang) * sbend;
+          var scy = (sy + ey) * 0.5 + Math.cos(sang) * sbend;
+          var light1 = rand() < 0.46;
+          var rgb1 = light1 ? '254,248,234' : '116,96,68';
+          var a1 = light1 ? (0.085 + rand() * 0.095) : (0.038 + rand() * 0.048);
+          var w1 = 0.32 + rand() * 0.32;
+          var drawShort = function(){ strokeTapered(sx, sy, scx, scy, ex, ey, w1, rgb1, a1); };
+          if(sx < 14 || sx > S - 14 || sy < 14 || sy > S - 14){ wrapDraw(drawShort); }
+          else { drawShort(); }
+        }
+        if(end < 640){ setTimeout(function(){ stepFelt(end); }, 0); }
+        else { setTimeout(function(){ stepThreads(0); }, 0); }
+      }
+
+      function stepThreads(start){
+        var end = Math.min(220, start + 110);
+        for(var i = start; i < end; i++){
+          var x0 = rand() * S;
+          var y0 = rand() * S;
+          var len = 6 + rand() * 14;
+          var ang = rand() < 0.52 ? (rand() - 0.5) * 0.55 : rand() * Math.PI * 2;
+          var x2 = x0 + Math.cos(ang) * len;
+          var y2 = y0 + Math.sin(ang) * len;
+          var bend = (rand() - 0.5) * len * 0.62;
+          var cx = (x0 + x2) * 0.5 - Math.sin(ang) * bend;
+          var cy = (y0 + y2) * 0.5 + Math.cos(ang) * bend;
+          var isLight = rand() < 0.44;
+          var rgb = isLight ? '254,248,234' : '108,88,62';
+          var lw = isLight ? (0.38 + rand() * 0.42) : (0.35 + rand() * 0.44);
+          var alpha = isLight ? (0.11 + rand() * 0.12) : (0.05 + rand() * 0.068);
+          var drawFiber = function(){ strokeTapered(x0, y0, cx, cy, x2, y2, lw, rgb, alpha); };
+          if(x0 < 24 || x0 > S - 24 || y0 < 24 || y0 > S - 24){ wrapDraw(drawFiber); }
+          else { drawFiber(); }
+        }
+        if(end < 220){ setTimeout(function(){ stepThreads(end); }, 0); }
+        else { setTimeout(stepInclusions, 0); }
+      }
+
+      function stepInclusions(){
+        for(var j = 0; j < 78; j++){
+          var fx = rand() * S;
+          var fy = rand() * S;
+          var rx = 0.4 + rand() * 0.95;
+          var ry = rx * (0.42 + rand() * 0.68);
+          var rot = rand() * Math.PI;
+          var warmHull = rand() < 0.26;
+          var fa = warmHull ? (0.075 + rand() * 0.085) : (0.08 + rand() * 0.11);
+          var fill = warmHull
+            ? 'rgba(154,74,40,' + fa.toFixed(3) + ')'
+            : 'rgba(98,80,55,' + fa.toFixed(3) + ')';
+          var drawFleck = function(){
+            ctx.save();
+            ctx.translate(fx, fy);
+            ctx.rotate(rot);
+            ctx.fillStyle = fill;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          };
+          if(fx < 6 || fx > S - 6 || fy < 6 || fy > S - 6){ wrapDraw(drawFleck); }
+          else { drawFleck(); }
+        }
+        if(typeof c.toBlob === 'function' && window.URL && URL.createObjectURL){
+          c.toBlob(function(blob){
+            if(blob){ applyUrl(URL.createObjectURL(blob)); }
+            else { applyUrl(c.toDataURL('image/png')); }
+          }, 'image/png');
+        } else {
+          applyUrl(c.toDataURL('image/png'));
+        }
+      }
+
+      stepGrain();
     }
     if(typeof window.requestIdleCallback === 'function'){
       window.requestIdleCallback(buildPaperStock, { timeout: 1200 });
