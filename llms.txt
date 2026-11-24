@@ -6,8 +6,8 @@ Un noyau solide, une architecture propre et du code qui tient en production, pas
 
 ## Liens principaux
 
-- [Bio / Carte de liens (FR)](https://bio.yssn.tech/): Page biolink officielle en français avec liens, contact direct et CV.
-- [Bio / Link Card (EN)](https://bio.yssn.tech/en): Official English biolink page with links, direct contact, and resume.
+- [Links / Carte de liens (FR)](https://bio.yssn.tech/): Page de liens officielle en français avec portfolio, contact direct et CV.
+- [Links Card (EN)](https://bio.yssn.tech/en): Official English links page with portfolio, direct contact, and resume.
 - [Portfolio](https://yssn.tech): Projets sélectionnés en développement mobile et web full-stack.
 - [Blog](https://blog.yssn.tech): Articles techniques sur le mobile, le web et l’architecture logicielle.
 - [GitHub](https://github.com/Yass5002): Projets open-source et code source (@Yass5002).
