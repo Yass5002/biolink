@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>404 — Page introuvable / Page not found · Yassine El Ouazzani</title>
+<meta name="robots" content="noindex, follow" />
+<meta name="theme-color" content="#e8e1d3" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%231b1812'/%3E%3Ctext x='32' y='47' text-anchor='middle' font-family='Georgia,serif' font-size='44' font-weight='700' fill='%23e7e2d6'%3EY%3C/text%3E%3Ccircle cx='50' cy='45' r='4' fill='%23c4502a'/%3E%3C/svg%3E" />
+<style>
+  @font-face{
+    font-family:'Fraunces';font-style:normal;font-weight:400;font-display:swap;
+    src:url('/fonts/fraunces-400-latin.woff2') format('woff2');
+  }
+  @font-face{
+    font-family:'Fraunces';font-style:normal;font-weight:580;font-display:swap;
+    src:url('/fonts/fraunces-580-latin.woff2') format('woff2');
+  }
+  @font-face{
+    font-family:'Inter';font-style:normal;font-weight:400 700;font-display:swap;
+    src:url('/fonts/inter-var-latin.woff2') format('woff2');
+  }
+  :root{
+    --paper:#e7e2d6; --ink:#1b1812; --val:#5a5244; --ink-3:#5c5546;
+    --rule:#bdb39f; --accent:#a63c1b;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    min-height:100%;display:grid;place-items:center;
+    padding:clamp(24px,6vw,48px);
+    background-color:#e6dfd1;
+    background-image:
+      radial-gradient(ellipse 88% 76% at 16% 12%,rgba(255,250,237,.54) 0%,rgba(254,247,232,.21) 44%,rgba(254,247,232,0) 76%),
+      radial-gradient(ellipse 62% 68% at 48% 45%,rgba(253,247,235,.26) 0%,rgba(253,247,235,0) 74%),
+      radial-gradient(ellipse 94% 88% at 92% 94%,rgba(146,126,96,.13) 0%,rgba(164,144,114,.05) 48%,rgba(164,144,114,0) 80%),
+      linear-gradient(132deg,rgba(251,245,232,.24) 0%,rgba(232,224,209,0) 54%,rgba(154,135,107,.08) 100%);
+    color:var(--ink);
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  }
+  .card{
+    width:min(100%,420px);
+  }
+  .code{
+    font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent);display:flex;align-items:center;gap:12px;
+  }
+  .code::after{content:"";flex:1;height:1px;background:var(--rule)}
+  h1{
+    margin-top:18px;
+    font-family:Fraunces,Georgia,serif;font-weight:580;
+    font-size:clamp(34px,8vw,46px);line-height:.98;letter-spacing:-.02em;
+    color:var(--ink);
+  }
+  .sub{
+    margin-top:8px;
+    font-family:Fraunces,Georgia,serif;font-weight:400;
+    font-size:clamp(18px,4.2vw,22px);line-height:1.25;letter-spacing:-.01em;
+    color:var(--val);
+  }
+  .note{
+    margin-top:20px;padding-top:16px;border-top:1px solid rgba(189,179,159,.8);
+    font-size:14.5px;line-height:1.55;color:var(--ink-3);
+  }
+  .note p + p{margin-top:6px}
+  .btn{
+    margin-top:28px;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:15px 18px;border-radius:3px;
+    background:var(--ink);color:var(--paper);text-decoration:none;
+    font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;line-height:1.2;
+    transition:background-color 160ms ease,transform 140ms cubic-bezier(0.23,1,0.32,1);
+  }
+  .btn:hover{background:#27221a}
+  .btn:active{transform:scale(0.985)}
+  .btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+  .btn .host{
+    font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:none;
+    color:rgba(231,226,214,.68);
+  }
+  .alt{
+    margin-top:14px;display:flex;justify-content:space-between;align-items:center;
+    font-size:12.5px;color:var(--val);
+  }
+  .alt a{
+    display:inline-flex;align-items:center;gap:5px;min-height:28px;padding:4px 0;
+    color:var(--ink);font-weight:600;text-decoration:none;
+    border-bottom:1px solid var(--rule);
+  }
+  .alt a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+  .alt svg{width:12px;height:12px;display:block}
+</style>
+</head>
+<body>
+  <main class="card">
+    <p class="code">Erreur 404</p>
+    <h1>Page introuvable</h1>
+    <p class="sub" lang="en">Page not found</p>
+    <div class="note">
+      <p>Cette adresse n’existe pas ou a été déplacée.</p>
+      <p lang="en">This page doesn’t exist or has been moved.</p>
+    </div>
+    <a class="btn" href="/">
+      <span>Retour à l’accueil / Home</span>
+      <span class="host">bio.yssn.tech</span>
+    </a>
+    <p class="alt">
+      <span>Yassine El Ouazzani</span>
+      <a href="/en" lang="en">English version<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M5.8 4.5h5.7v5.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,22 @@
+# Yassine El Ouazzani
+
+> Développeur Mobile & Full-Stack basé à Meknès, Maroc — spécialisé en développement mobile Android natif (Kotlin, Jetpack Compose) et cross-platform (Flutter/Dart), web full-stack (TypeScript, React, Next.js, Node.js, PHP/MySQL) et backend Go.
+
+Un noyau solide, une architecture propre et du code qui tient en production, pas juste en démo.
+
+## Liens principaux
+
+- [Bio / Carte de liens (FR)](https://bio.yssn.tech/): Page biolink officielle en français avec liens, contact direct et CV.
+- [Bio / Link Card (EN)](https://bio.yssn.tech/en): Official English biolink page with links, direct contact, and resume.
+- [Portfolio](https://yssn.tech): Projets sélectionnés en développement mobile et web full-stack.
+- [Blog](https://blog.yssn.tech): Articles techniques sur le mobile, le web et l’architecture logicielle.
+- [GitHub](https://github.com/Yass5002): Projets open-source et code source (@Yass5002).
+- [LinkedIn](https://www.linkedin.com/in/yassine-elouazzani): Parcours, formation et expériences professionnelles.
+- [CV (PDF)](https://bio.yssn.tech/cv.pdf): Curriculum vitæ téléchargeable en français (1 page).
+
+## Contact
+
+- Email : yassacerman@gmail.com
+- Téléphone : +212 7 68 19 77 38
+- Localisation : Meknès, Maroc
+- Langues : Arabe (maternel), Français (courant), Anglais (courant)
